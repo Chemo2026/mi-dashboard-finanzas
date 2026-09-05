@@ -31,7 +31,8 @@ def load_data():
 
 def save_data(df):
     df_to_save = df.copy()
-    # Formatear la fecha como string para que Google Sheets no tenga problemas
+    # Asegurarnos de que sea formato fecha antes de convertirlo a texto
+    df_to_save['Fecha'] = pd.to_datetime(df_to_save['Fecha'])
     df_to_save['Fecha'] = df_to_save['Fecha'].dt.strftime('%Y-%m-%d')
     conn.update(data=df_to_save)
 
