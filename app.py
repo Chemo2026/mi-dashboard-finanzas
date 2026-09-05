@@ -163,8 +163,20 @@ if not df_filtrado.empty:
 
 # --- TABLA DE DATOS ---
 st.markdown("---")
-st.subheader("Últimos Registros")
+st.subheader("Historial de Registros (Editable)")
+st.write("Selecciona la casilla izquierda de cualquier fila y presiona el ícono de la papelera (o la tecla Suprimir) para borrarla. También puedes hacer doble clic en cualquier texto para editarlo.")
 if not df.empty:
-    st.dataframe(df.sort_values(by='Fecha', ascending=False), use_container_width=True)
+    # Mostrar tabla interactiva (ordenada por defecto)
+    df_ordenado = df.sort_values(by='Fecha', ascending=False).reset_index(drop=True)
+    
+    df_editado = st.data_editor(
+        df_ordenado,
+        num_rows="dynamic", # Permite agregar o borrar filas
+        use_container_width=True
+    )
+    
+    if st.button("Guardar cambios de la tabla"):
+        save_data(df_editado)
+        st.success("¡Cambios guardados con éxito!")
 else:
     st.info("Aún no hay registros. ¡Usa la barra lateral para agregar uno nuevo!")
